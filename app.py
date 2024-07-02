@@ -85,6 +85,90 @@ quiz_questions = [
         "question": "In reinforced concrete design, what does the term 'rebar' stand for?",
         "options": ["A. Retractable bar", "B. Reinforcing bar", "C. Resilient binder", "D. Reusable block"],
         "correct_answer": "B"
+    },
+    {
+        "question": "What is the purpose of a culvert in civil engineering?",
+        "options": ["A. To filter pollutants from water", "B. To manage stormwater runoff",
+                    "C. To purify groundwater", "D. To store agricultural runoff"],
+        "correct_answer": "B"
+    },
+    {
+        "question": "Which of the following is a commonly used construction material for building foundations?",
+        "options": ["A. Steel", "B. Timber", "C. Concrete", "D. Plastic"],
+        "correct_answer": "C"
+    },
+    {
+        "question": "What is the function of a surveyor in civil engineering projects?",
+        "options": ["A. Designing electrical systems", "B. Estimating project costs",
+                    "C. Mapping land and measuring distances", "D. Programming software applications"],
+        "correct_answer": "C"
+    },
+    {
+        "question": "What does the term 'subgrade' refer to in road construction?",
+        "options": ["A. Top layer of asphalt", "B. Soil beneath the pavement",
+                    "C. Shoulder of the road", "D. Lane markings"],
+        "correct_answer": "B"
+    },
+    {
+        "question": "Which type of bridge is known for its arch shape?",
+        "options": ["A. Suspension bridge", "B. Beam bridge", "C. Arch bridge", "D. Cable-stayed bridge"],
+        "correct_answer": "C"
+    },
+    {
+        "question": "What is the purpose of soil compaction in construction?",
+        "options": ["A. To increase soil fertility", "B. To reduce soil erosion",
+                    "C. To increase soil density and strength", "D. To filter water contaminants"],
+        "correct_answer": "C"
+    },
+    {
+        "question": "What does the term 'civil infrastructure' encompass?",
+        "options": ["A. Residential buildings", "B. Transportation systems",
+                    "C. Information technology networks", "D. Recreational facilities"],
+        "correct_answer": "B"
+    },
+    {
+        "question": "Which construction method involves pouring concrete into pre-made forms on-site?",
+        "options": ["A. Prefabrication", "B. Cast-in-place", "C. Modular construction", "D. Steel framing"],
+        "correct_answer": "B"
+    },
+    {
+        "question": "What does the acronym 'HVAC' stand for in building systems?",
+        "options": ["A. High-velocity air conditioning", "B. Heating, ventilation, and air conditioning",
+                    "C. Home ventilation and cooling", "D. Hybrid vacuum air circulation"],
+        "correct_answer": "B"
+    },
+    {
+        "question": "Which environmental factor is crucial in designing bridges and tunnels?",
+        "options": ["A. Noise pollution", "B. Light pollution", "C. Air quality", "D. Water quality"],
+        "correct_answer": "A"
+    },
+    {
+        "question": "What role does a civil engineer play in disaster management?",
+        "options": ["A. Providing emergency medical care", "B. Assessing structural damage",
+                    "C. Coordinating public transportation", "D. Restoring power lines"],
+        "correct_answer": "B"
+    },
+    {
+        "question": "Which engineering principle is fundamental to earthquake-resistant building design?",
+        "options": ["A. Aerodynamics", "B. Seismic isolation", "C. Solar energy capture", "D. Tidal power generation"],
+        "correct_answer": "B"
+    },
+    {
+        "question": "What is the purpose of a stormwater management system in urban areas?",
+        "options": ["A. To divert traffic flow during storms", "B. To prevent flooding",
+                    "C. To control noise pollution", "D. To recycle wastewater"],
+        "correct_answer": "B"
+    },
+    {
+        "question": "Which type of foundation is suitable for buildings on soft soil?",
+        "options": ["A. Pile foundation", "B. Raft foundation", "C. Strip foundation", "D. Spread footing"],
+        "correct_answer": "A"
+    },
+    {
+        "question": "What is the function of a traffic engineer in urban planning?",
+        "options": ["A. Designing public parks", "B. Analyzing population growth",
+                    "C. Optimizing traffic flow and signal timings", "D. Managing wildlife habitats"],
+        "correct_answer": "C"
     }
 ]
 
@@ -134,7 +218,8 @@ def start_game():
 
         # Check if game over
         if lives <= 0 or current_question >= len(quiz_questions):
-            return  # Return to main menu
+            display_final_score()  # Display final score and handle end game logic
+            return  # Exit game loop
         
         # Clear the screen
         screen.blit(background_image, (0, 0))
@@ -148,6 +233,65 @@ def start_game():
         
         # Update the display
         pygame.display.update()
+
+def display_final_score():
+    global score
+    
+    # Play game over sound
+    pygame.mixer.music.load('gameover.mp3')
+    pygame.mixer.music.play()
+
+    # Define button rectangles
+    retry_button_rect = pygame.Rect(screen_width // 2 - 100, 300, 200, 50)
+    menu_button_rect = pygame.Rect(screen_width // 2 - 100, 370, 200, 50)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.mixer.music.load('track.mp3')
+                    pygame.mixer.music.play(-1) 
+                    return  # Return to main menu
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if retry_button_rect.collidepoint(event.pos):
+                    pygame.mixer.music.stop()  # Stop game over sound
+                    pygame.mixer.music.load('track.mp3')
+                    pygame.mixer.music.play(-1) 
+                    start_game()  # Retry game
+                elif menu_button_rect.collidepoint(event.pos):
+                    pygame.mixer.music.stop()  # Stop game over sound
+                    pygame.mixer.music.load('track.mp3')
+                    pygame.mixer.music.play(-1) 
+                    return  # Return to main menu
+        
+        # Clear the screen
+        screen.blit(background_image, (0, 0))
+        screen.blit(dim_surface, (0, 0))
+
+        # Display final score higher on the screen
+        final_score_text = f"Final Score: {score}"
+        draw_text(final_score_text, menu_title_font, ORANGE, screen, screen_width // 2, 150)
+
+        # Draw retry button
+        draw_rounded_rect(screen, ORANGE, retry_button_rect)
+        draw_text('Retry', menu_button_font, BLACK, screen, screen_width // 2, 315)
+
+        # Draw menu button
+        draw_rounded_rect(screen, ORANGE, menu_button_rect)
+        draw_text('Menu', menu_button_font, BLACK, screen, screen_width // 2, 385)
+
+        # Update the display
+        pygame.display.update()
+
+        # Control FPS
+        pygame.time.Clock().tick(60)
+
+
+
+
 
 def display_question(question_data):
     question_text = question_data["question"]
