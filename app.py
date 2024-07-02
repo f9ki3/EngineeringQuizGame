@@ -50,8 +50,11 @@ quiz_button_font = pygame.font.Font(None, quiz_button_font_size)  # Font size fo
 pygame.mixer.music.load('track.mp3')
 pygame.mixer.music.play(-1)  # -1 loops the music indefinitely
 
+
 # Load sounds
 click_sound = pygame.mixer.Sound('gamestart.mp3')
+correct_sound = pygame.mixer.Sound('correct.mp3')
+fail_sound = pygame.mixer.Sound('fail.mp3')
 
 # Define quiz questions globally
 quiz_questions = [
@@ -207,6 +210,7 @@ def display_question(question_data):
         option_y += option_offset
 
 
+# Inside check_answer_click() function
 def check_answer_click():
     global score, lives, current_question
     
@@ -227,8 +231,10 @@ def check_answer_click():
         # Check if the clicked answer is correct
         if clicked_option.startswith(quiz_questions[current_question]["correct_answer"]):
             score += 1
+            correct_sound.play()  # Play correct sound
         else:
             lives -= 1
+            fail_sound.play()  # Play fail sound
         
         # Move to the next question
         current_question += 1
