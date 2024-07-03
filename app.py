@@ -2,9 +2,9 @@ import pygame
 import sys
 import random
 
-# Initialize Pygame
+
 pygame.init()
-pygame.mixer.init()  # Initialize mixer module for sound
+pygame.mixer.init()  
 
 # Set up the screen
 screen_width = 800
@@ -171,6 +171,8 @@ quiz_questions = [
         "correct_answer": "C"
     }
 ]
+
+random.shuffle(quiz_questions)
 
 # Game variables
 score = 0
