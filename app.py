@@ -446,6 +446,14 @@ def main_menu():
         draw_rounded_rect(screen, ORANGE, exit_button_rect)
         draw_text('Exit', menu_button_font, BLACK, screen, screen_width // 2, 405)
 
+        # Display developed by text
+        developed_by_text = "Developed by: "
+        draw_text(developed_by_text, menu_button_font, WHITE, screen, screen_width // 2, 470)
+
+        developed= "Andrew Jhon V. Aytona and Kolin Pernites"
+        draw_text(developed, menu_button_font, WHITE, screen, screen_width // 2, 520)
+
+
         pygame.display.update()
 
 if __name__ == '__main__':
